@@ -28,6 +28,11 @@ namespace ProductCatalog
             // install: Microsoft.EntityFrameworkCore.Sqlite
             services.AddDbContext<StoreDataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc();
+            // AddScoped - create one item per requisition (this is the better way);
+            services.AddScoped<StoreDataContext, StoreDataContext>();
+            // AddTransient - create many itens per requisition (open many connections with the database);
+            // AddTransient always opens a new transactio in database
+            // services.AddTransient<StoreDataContext, StoreDataContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,11 +40,6 @@ namespace ProductCatalog
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });
 
             app.UseMvc();
         }
