@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProductCatalog.Data;
+using ProductCatalog.Repositories;
 
 namespace ProductCatalog
 {
@@ -33,6 +34,11 @@ namespace ProductCatalog
             // AddTransient - create many itens per requisition (open many connections with the database);
             // AddTransient always opens a new transactio in database
             // services.AddTransient<StoreDataContext, StoreDataContext>();
+            
+            // Here we use AddTransient because always that ProductRepository is called, we want a new instance of it;
+            // we used AddScoped to StoreDataContext because StoreDataContext it's who connects to the database;
+            services.AddTransient<ProductRepository, ProductRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
