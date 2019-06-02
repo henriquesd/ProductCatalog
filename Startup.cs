@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProductCatalog.Data;
 using ProductCatalog.Repositories;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ProductCatalog
 {
@@ -42,6 +43,10 @@ namespace ProductCatalog
             // we used AddScoped to StoreDataContext because StoreDataContext it's who connects to the database;
             services.AddTransient<ProductRepository, ProductRepository>();
 
+            services.AddSwaggerGen(x =>
+            {
+                x.SwaggerDoc("v1", new Info { Title = "Product Catalog", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +58,12 @@ namespace ProductCatalog
             app.UseMvc();
 
             app.UseResponseCompression();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => 
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Product Catalog - V1");
+            });
         }
     }
 }
