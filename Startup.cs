@@ -28,13 +28,16 @@ namespace ProductCatalog
         {
             // install: Microsoft.EntityFrameworkCore.Sqlite
             services.AddDbContext<StoreDataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddMvc();
-            // AddScoped - create one item per requisition (this is the better way);
+
+            services.AddResponseCompression();
+
+            // AddScoped - create one item per requisition;
             services.AddScoped<StoreDataContext, StoreDataContext>();
+            
             // AddTransient - create many itens per requisition (open many connections with the database);
             // AddTransient always opens a new transactio in database
-            // services.AddTransient<StoreDataContext, StoreDataContext>();
-            
             // Here we use AddTransient because always that ProductRepository is called, we want a new instance of it;
             // we used AddScoped to StoreDataContext because StoreDataContext it's who connects to the database;
             services.AddTransient<ProductRepository, ProductRepository>();
@@ -48,6 +51,8 @@ namespace ProductCatalog
                 app.UseDeveloperExceptionPage();
 
             app.UseMvc();
+
+            app.UseResponseCompression();
         }
     }
 }

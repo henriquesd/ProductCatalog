@@ -8,6 +8,8 @@
 - dotnet add package Microsoft.EntityFrameworkCore
 - dotnet add package Microsoft.AspNetCore.Mvc
 - dotnet add package Flunt
+- dotnet add package Microsoft.AspNetCore.ResponseCompression
+
 
 ### Database/Migrations:
 - dotnet ef migrations add Initial
